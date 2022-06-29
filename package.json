@@ -1,0 +1,23 @@
+{
+  "name": "chilean-plate-validator",
+  "version": "0.5.0",
+  "description": "Simple chilean plate validator",
+  "author": "Gabriel Galilea",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "patente",
+    "plate",
+    "Chile",
+    "validator"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+}
