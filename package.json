@@ -1,6 +1,6 @@
 {
   "name": "chilean-plate-validator",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Simple chilean plate validator",
   "author": "Gabriel Galilea",
   "license": "MIT License",
@@ -10,12 +10,15 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gabo2151/chilean-plate-validator"
+  },
   "keywords": [
     "patente",
     "plate",
     "Chile",
     "validator",
-    "patente",
     "validar"
   ],
   "dependencies": {},
