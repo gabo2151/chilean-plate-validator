@@ -1,9 +1,9 @@
 {
   "name": "chilean-plate-validator",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Simple chilean plate validator",
   "author": "Gabriel Galilea",
-  "license": "ISC",
+  "license": "MIT License",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
@@ -14,7 +14,9 @@
     "patente",
     "plate",
     "Chile",
-    "validator"
+    "validator",
+    "patente",
+    "validar"
   ],
   "dependencies": {},
   "devDependencies": {
