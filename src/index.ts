@@ -8,6 +8,14 @@ const REGEX_LIST = [
   { name: 'NEW_MOTORCYCLE_PLATE', regex: /^(?=.{6}$)[B-DF-HJ-LPR-TV-Z]{3}\d{3}[^s]*$/ },
 ]
 
+/**
+ * Verifies if the plate is valid in Chile.
+ *
+ * @param plate Plate to validate.
+ *
+ * @returns True if the plate is valid in any of the RegEx saved,
+ * false otherwise.
+ */
 export function plateValid(plate: string): boolean {
   let state = false;
   if (plate == null) return state;
@@ -17,6 +25,13 @@ export function plateValid(plate: string): boolean {
   return state;
 }
 
+/**
+ * Get the plate type according to the RegEx associated.
+ *
+ * @param plate Plate to check the type.
+ *
+ * @returns The type according to the RegEx that matches the plate submitted.
+ */
 export function plateType(plate: string): string {
   let type = 'INVALID';
   if (plate == null) return type;
@@ -26,12 +41,29 @@ export function plateType(plate: string): string {
   return type;
 }
 
-class Plate {
-  valid!: boolean;
-  type!: string;
+/**
+ * Plate class... Working on this...
+ */
+export class Plate {
+  validState!: boolean;
+  plateType!: string;
 
+  /**
+   * Creates a new Plate instance.
+   *
+   * @param plate Plate required to check validity and type
+   */
   constructor(plate: string) {
-    this.valid = plateValid(plate);
-    this.type = plateType(plate);
+    this.validState = plateValid(plate);
+    this.plateType = plateType(plate);
   }
+
+  get valid(): boolean {
+    return this.validState;
+  }
+
+  get type(): string {
+    return this.plateType;
+  }
+
 }
