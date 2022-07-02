@@ -43,7 +43,7 @@ $ npm i chilean-plate-validator --save
 
 ## License
 
-Read LICENCE.md
+[MIT License](https://github.com/gabo2151/chilean-plate-validator/blob/main/LICENSE)
 
 ## Author
 
