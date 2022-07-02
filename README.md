@@ -1,10 +1,12 @@
 # chilean-plate-validator
 
+![Ridiculous badge, I wanted a shield too](https://img.shields.io/badge/sabrosura-extrema-brightgreen)
+
 ## Description
 
 This module will help you to verify if a chilean registration plate is valid.
 
-The RegExes built in code follows the chilean civil registration specifications.
+The RegExes built in, follow the chilean civil registration specifications.
 
 [«Instructivo para Validación de Patentes - Servicio de Registro Civil e Identificación»](https://www.registrocivil.cl/PortalOI/Manuales/ValidacionPatentes.pdf)
 
