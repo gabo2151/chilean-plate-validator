@@ -44,9 +44,9 @@ export function plateType(plate: string): string {
 /**
  * Plate class... Working on this...
  */
-export class Plate {
-  validState!: boolean;
-  plateType!: string;
+export class CLPlate {
+  private readonly validState: boolean;
+  private readonly plateType: string;
 
   /**
    * Creates a new Plate instance.
