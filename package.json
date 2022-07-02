@@ -1,6 +1,6 @@
 {
   "name": "chilean-plate-validator",
-  "version": "0.6.1",
+  "version": "0.6.5",
   "description": "Simple chilean plate validator",
   "author": "Gabriel Galilea",
   "license": "MIT License",

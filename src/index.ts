@@ -17,12 +17,8 @@ const REGEX_LIST = [
  * false otherwise.
  */
 export function plateValid(plate: string): boolean {
-  let state = false;
-  if (plate == null) return state;
-  REGEX_LIST.forEach(reg => {
-    if ( reg.regex.test(`${plate}`) ) state = true;
-  });
-  return state;
+  if (plate == null) return false;
+  return !!REGEX_LIST.find(reg => reg.regex.test(`${plate}`));
 }
 
 /**
@@ -33,12 +29,9 @@ export function plateValid(plate: string): boolean {
  * @returns The type according to the RegEx that matches the plate submitted.
  */
 export function plateType(plate: string): string {
-  let type = 'INVALID';
-  if (plate == null) return type;
-  REGEX_LIST.forEach(reg => {
-    if ( reg.regex.test(`${plate}`) ) type = reg.name;
-  });
-  return type;
+  if (plate == null) return 'INVALID';
+  const findPlate = REGEX_LIST.find(reg => reg.regex.test(`${plate}`));
+  return (findPlate ? findPlate.name : 'INVALID');
 }
 
 /**
