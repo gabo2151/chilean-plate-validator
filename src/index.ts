@@ -20,7 +20,7 @@ export function plateValid(plate: string): boolean {
   let state = false;
   if (plate == null) return state;
   REGEX_LIST.forEach(reg => {
-    if ( `${plate}`.match(reg.regex) != null ) state = true;
+    if ( reg.regex.test(`${plate}`) ) state = true;
   });
   return state;
 }
@@ -36,7 +36,7 @@ export function plateType(plate: string): string {
   let type = 'INVALID';
   if (plate == null) return type;
   REGEX_LIST.forEach(reg => {
-    if ( `${plate}`.match(reg.regex) != null ) type = reg.name;
+    if ( reg.regex.test(`${plate}`) ) type = reg.name;
   });
   return type;
 }
