@@ -1,10 +1,15 @@
 # chilean-plate-validator
 
 ![Ridiculous badge, I wanted a shield too](https://img.shields.io/badge/sabrosura-extrema-brightgreen)
+[![install size](https://packagephobia.com/badge?p=chilean-plate-validator)](https://packagephobia.com/result?p=chilean-plate-validator)
+[![npm version](https://img.shields.io/npm/v/chilean-plate-validator)](https://www.npmjs.org/package/chilean-plate-validator)
+[![npm downloads](https://img.shields.io/npm/dm/chilean-plate-validator)](https://npm-stat.com/charts.html?package=chilean-plate-validator)
+[![Known Vulnerabilities](https://snyk.io/test/npm/chilean-plate-validator/badge.svg)](https://snyk.io/test/npm/chilean-plate-validator)
+[![Coverage Status](https://coveralls.io/repos/github/gabo2151/chilean-plate-validator/badge.svg?branch=main)](https://coveralls.io/github/gabo2151/chilean-plate-validator?branch=main)
 
 ## Description
 
-This module will help you to verify if a chilean registration plate is valid.
+This module will help you to verify if a chilean registration plate is valid (doesn't calculate the check digit).
 
 The RegExes built in, follow the chilean civil registration specifications.
 

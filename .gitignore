@@ -3,3 +3,4 @@ sonarlint
 .idea
 dist
 package-lock.json
+.coveralls.yml
