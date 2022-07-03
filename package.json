@@ -1,6 +1,6 @@
 {
   "name": "chilean-plate-validator",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "Simple chilean plate validator",
   "author": "Gabriel Galilea",
   "license": "MIT License",
@@ -8,7 +8,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "prepack": "run build",
+    "prepack": "npm run build",
     "test": "jest --coverage"
   },
   "repository": {
