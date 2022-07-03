@@ -1,12 +1,4 @@
-/**
- * RegExes build by chilean civil registration specifications.<br>
- * [«Instructivo para Validación de Patentes - Servicio de Registro Civil e Identificación»](https://www.registrocivil.cl/PortalOI/Manuales/ValidacionPatentes.pdf)
- */
-const REGEX_LIST = [
-  { name: 'OLD_PLATE', regex: /^(?=.{6}$)[A-Z]{2}\d{4}[^s]*$/ },
-  { name: 'NEW_VEHICLE_PLATE', regex: /^(?=.{6}$)[B-DF-HJ-LPR-TV-Z]{4}[1-9]\d[^s]*$/ },
-  { name: 'NEW_MOTORCYCLE_PLATE', regex: /^(?=.{6}$)[B-DF-HJ-LPR-TV-Z]{3}\d{3}[^s]*$/ },
-]
+import { REGEX_LIST, SPECIAL_PLATES } from "./constants";
 
 /**
  * Verifies if the plate is valid in Chile.
@@ -17,7 +9,6 @@ const REGEX_LIST = [
  * false otherwise.
  */
 export function plateValid(plate: string): boolean {
-  if (plate == null) return false;
   return !!REGEX_LIST.find(reg => reg.regex.test(plate.toUpperCase()));
 }
 
@@ -29,8 +20,12 @@ export function plateValid(plate: string): boolean {
  * @returns The type according to the RegEx that matches the plate submitted.
  */
 export function plateType(plate: string): string {
-  if (plate == null) return 'INVALID';
-  const findPlate = REGEX_LIST.find(reg => reg.regex.test(plate.toUpperCase()));
+  const _plate = plate.toUpperCase();
+  const findPlate = REGEX_LIST.find(reg => reg.regex.test(_plate));
+  if (findPlate?.name === 'OLD_PLATE') {
+    const specialPlate = SPECIAL_PLATES.find(sp => _plate.indexOf(sp.combination) > -1 );
+    if(!!specialPlate) return specialPlate.name;
+  }
   return (findPlate ? findPlate.name : 'INVALID');
 }
 

@@ -19,6 +19,11 @@ const tests = [
   { plate: 'AC20', plateValid: false, plateType: 'INVALID' },
   { plate: 'ACX200', plateValid: false, plateType: 'INVALID' },
   { plate: 'BBBB2000', plateValid: false, plateType: 'INVALID' },
+  { plate: 'CD1202', plateValid: true, plateType: 'CUERPO_DIPLOMÁTICO' },
+  { plate: 'RP1202', plateValid: true, plateType: 'RADIOPATRULLA' },
+  { plate: 'Z2139', plateValid: true, plateType: 'POLICE' },
+  { plate: 'J1209', plateValid: true, plateType: 'POLICE' },
+  { plate: 'A6709', plateValid: true, plateType: 'AMBULANCE' },
 ];
 
 describe('testing index file', () => {
