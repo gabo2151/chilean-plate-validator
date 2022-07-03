@@ -8,6 +8,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "prepack": "run build",
     "test": "jest"
   },
   "repository": {
