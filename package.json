@@ -1,6 +1,6 @@
 {
   "name": "chilean-plate-validator",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Simple chilean plate validator",
   "author": "Gabriel Galilea",
   "license": "MIT License",
@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "prepack": "run build",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,17 @@
   "devDependencies": {
     "@types/jest": "^28.1.4",
     "jest": "^28.1.2",
+    "jest-sonar-reporter": "^2.0.0",
     "ts-jest": "^28.0.5",
     "typescript": "^4.7.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "testResultsProcessor": "jest-sonar-reporter",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ]
   }
 }
