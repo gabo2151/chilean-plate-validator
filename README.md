@@ -5,7 +5,6 @@
 [![npm version](https://img.shields.io/npm/v/chilean-plate-validator)](https://www.npmjs.org/package/chilean-plate-validator)
 [![npm downloads](https://img.shields.io/npm/dm/chilean-plate-validator)](https://npm-stat.com/charts.html?package=chilean-plate-validator)
 [![Known Vulnerabilities](https://snyk.io/test/npm/chilean-plate-validator/badge.svg)](https://snyk.io/test/npm/chilean-plate-validator)
-[![Coverage Status](https://coveralls.io/repos/github/gabo2151/chilean-plate-validator/badge.svg?branch=main)](https://coveralls.io/github/gabo2151/chilean-plate-validator?branch=main)
 
 ## Description
 
