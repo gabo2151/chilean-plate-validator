@@ -26,25 +26,16 @@ describe('testing index file', () => {
   tests.forEach(_test => {
     test(`\'${_test.plate}\' should result in \'${_test.plateValid}\'`, () => {
       expect(plateValid(_test.plate)).toBe(_test.plateValid);
-    })
-  });
-
-  tests.forEach(_test => {
+    });
     test(`\'${_test.plate}\' should result in \'${_test.plateType}\'`, () => {
       expect(plateType(_test.plate)).toBe(_test.plateType);
-    })
-  });
-
-  tests.forEach(_test => {
+    });
     test(`new CLPlate(\'${_test.plate}\').valid should result in \'${_test.plateValid}\'`, () => {
       expect(new CLPlate(_test.plate).valid).toBe(_test.plateValid);
-    })
-  });
-
-  tests.forEach(_test => {
+    });
     test(`new CLPlate(\'${_test.plate}\').type should result in \'${_test.plateType}\'`, () => {
       expect(new CLPlate(_test.plate).type).toBe(_test.plateType);
-    })
+    });
   });
 
 });
