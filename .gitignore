@@ -2,5 +2,7 @@ node_modules
 sonarlint
 .idea
 dist
+coverage
 package-lock.json
 .coveralls.yml
+test-report.xml
