@@ -18,7 +18,7 @@ const REGEX_LIST = [
  */
 export function plateValid(plate: string): boolean {
   if (plate == null) return false;
-  return !!REGEX_LIST.find(reg => reg.regex.test(`${plate}`));
+  return !!REGEX_LIST.find(reg => reg.regex.test(plate));
 }
 
 /**
@@ -30,7 +30,7 @@ export function plateValid(plate: string): boolean {
  */
 export function plateType(plate: string): string {
   if (plate == null) return 'INVALID';
-  const findPlate = REGEX_LIST.find(reg => reg.regex.test(`${plate}`));
+  const findPlate = REGEX_LIST.find(reg => reg.regex.test(plate));
   return (findPlate ? findPlate.name : 'INVALID');
 }
 
