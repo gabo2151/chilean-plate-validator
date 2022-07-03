@@ -5,6 +5,16 @@
 [![npm version](https://img.shields.io/npm/v/chilean-plate-validator)](https://www.npmjs.org/package/chilean-plate-validator)
 [![npm downloads](https://img.shields.io/npm/dm/chilean-plate-validator)](https://npm-stat.com/charts.html?package=chilean-plate-validator)
 [![Known Vulnerabilities](https://snyk.io/test/npm/chilean-plate-validator/badge.svg)](https://snyk.io/test/npm/chilean-plate-validator)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=gabo2151_chilean-plate-validator&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=gabo2151_chilean-plate-validator)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=gabo2151_chilean-plate-validator&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=gabo2151_chilean-plate-validator)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=gabo2151_chilean-plate-validator&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=gabo2151_chilean-plate-validator)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=gabo2151_chilean-plate-validator&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=gabo2151_chilean-plate-validator)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gabo2151_chilean-plate-validator&metric=coverage)](https://sonarcloud.io/summary/new_code?id=gabo2151_chilean-plate-validator)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=gabo2151_chilean-plate-validator&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=gabo2151_chilean-plate-validator)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gabo2151_chilean-plate-validator&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=gabo2151_chilean-plate-validator)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=gabo2151_chilean-plate-validator&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=gabo2151_chilean-plate-validator)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=gabo2151_chilean-plate-validator&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=gabo2151_chilean-plate-validator)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=gabo2151_chilean-plate-validator&metric=bugs)](https://sonarcloud.io/summary/new_code?id=gabo2151_chilean-plate-validator)
 
 ## Description
 
