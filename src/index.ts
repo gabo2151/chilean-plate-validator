@@ -20,10 +20,10 @@ export function plateValid(plate: string): boolean {
  * @returns The type according to the RegEx that matches the plate submitted.
  */
 export function plateType(plate: string): string {
-  const _plate = plate.toUpperCase();
-  const findPlate = REGEX_LIST.find(reg => reg.regex.test(_plate));
+  plate = plate.toUpperCase();
+  const findPlate = REGEX_LIST.find(reg => reg.regex.test(plate));
   if (findPlate?.name === 'OLD_PLATE') {
-    const specialPlate = SPECIAL_PLATES.find(sp => _plate.indexOf(sp.combination) > -1 );
+    const specialPlate = SPECIAL_PLATES.find(sp => plate.indexOf(sp.combination) > -1 );
     if(!!specialPlate) return specialPlate.name;
   }
   return (findPlate ? findPlate.name : 'INVALID');
