@@ -16,15 +16,11 @@ A lightweight, zero-dependency utility to validate and identify Chilean license 
 * **Up to date**: Supports new formats for trailers, motorcycles, and special vehicles.
 * **Robust**: Normalizes inputs (handles spaces and hyphens automatically).
 
----
-
 ## 🚀 Installation
 
 ```shell
 npm install chilean-plate-validator
 ```
-
----
 
 ## 🛠 Usage
 
@@ -55,20 +51,14 @@ if (plate.isValid) {
 }
 ```
 
----
-
 ## 📚 Legal Basis & Documentation
 This module follows the official specifications from the Servicio de Registro Civil e Identificación de Chile.
 
 - [Official Manual (Online)](https://www.registrocivil.cl/PortalOI/Manuales/ValidacionPatentes.pdf)
 - [Local Backup (Historical Reference)](./docs/ValidacionPatentes.pdf)
 
----
-
 ## 📄 License
 This project is licensed under the MIT License.
-
----
 
 ## 👤 Author
 Gabriel Galilea
