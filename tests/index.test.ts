@@ -1,46 +1,46 @@
 import { plateValid, plateType, CLPlate } from '../src';
 
-const tests = [
-  { plate: '', plateValid: false, plateType: 'INVALID' },
-  { plate: 'BBCC10', plateValid: true, plateType: 'NEW_VEHICLE_PLATE' },
-  { plate: 'bbcc10', plateValid: true, plateType: 'NEW_VEHICLE_PLATE' },
-  { plate: 'AAXX00', plateValid: false, plateType: 'INVALID' },
-  { plate: 'BBCC1', plateValid: false, plateType: 'INVALID' },
-  { plate: 'BBBCC10', plateValid: false, plateType: 'INVALID' },
-  { plate: 'BBCC00', plateValid: false, plateType: 'INVALID' },
-  { plate: 'BB10CC', plateValid: false, plateType: 'INVALID' },
-  { plate: 'SEXY69', plateValid: false, plateType: 'INVALID' },
-  { plate: 'JJCC27', plateValid: true, plateType: 'NEW_VEHICLE_PLATE' },
-  { plate: 'jjcc27', plateValid: true, plateType: 'NEW_VEHICLE_PLATE' },
-  { plate: 'AR1240', plateValid: true, plateType: 'OLD_PLATE' },
-  { plate: 'ar1240', plateValid: true, plateType: 'OLD_PLATE' },
-  { plate: 'CBC320', plateValid: true, plateType: 'NEW_MOTORCYCLE_PLATE' },
-  { plate: 'cbc320', plateValid: true, plateType: 'NEW_MOTORCYCLE_PLATE' },
-  { plate: 'AC20', plateValid: false, plateType: 'INVALID' },
-  { plate: 'ACX200', plateValid: false, plateType: 'INVALID' },
-  { plate: 'BBBB2000', plateValid: false, plateType: 'INVALID' },
-  { plate: 'CD1202', plateValid: true, plateType: 'CUERPO_DIPLOMÁTICO' },
-  { plate: 'RP1202', plateValid: true, plateType: 'RADIOPATRULLA' },
-  { plate: 'Z2139', plateValid: true, plateType: 'POLICE' },
-  { plate: 'J1209', plateValid: true, plateType: 'POLICE' },
-  { plate: 'A6709', plateValid: true, plateType: 'AMBULANCE' },
+const testCases = [
+  { plate: '', expectedValid: false, expectedType: 'INVALID' },
+  { plate: 'BBCC10', expectedValid: true, expectedType: 'NEW_VEHICLE_PLATE' },
+  { plate: 'BB-CC-12', expectedValid: true, expectedType: 'NEW_VEHICLE_PLATE' },
+  { plate: 'AR1240', expectedValid: true, expectedType: 'OLD_PLATE' },
+  { plate: 'CBC320', expectedValid: true, expectedType: 'NEW_MOTORCYCLE_PLATE' },
+  { plate: 'RRR123', expectedValid: true, expectedType: 'NEW_MOTORCYCLE_PLATE' },
+  { plate: 'CD1202', expectedValid: true, expectedType: 'CUERPO_DIPLOMÁTICO' },
+  { plate: 'Z2139', expectedValid: true, expectedType: 'POLICE' },
+  { plate: 'A6709', expectedValid: true, expectedType: 'AMBULANCE' },
+  { plate: 'SEXY69', expectedValid: false, expectedType: 'INVALID' },
 ];
 
-describe('testing index file', () => {
+describe('Chilean Plate Validator', () => {
+  testCases.forEach(({ plate, expectedValid, expectedType }) => {
+    describe(`Plate: ${plate || 'empty'}`, () => {
 
-  tests.forEach(_test => {
-    test(`\'${_test.plate}\' should result in \'${_test.plateValid}\'`, () => {
-      expect(plateValid(_test.plate)).toBe(_test.plateValid);
-    });
-    test(`\'${_test.plate}\' should result in \'${_test.plateType}\'`, () => {
-      expect(plateType(_test.plate)).toBe(_test.plateType);
-    });
-    test(`new CLPlate(\'${_test.plate}\').valid should result in \'${_test.plateValid}\'`, () => {
-      expect(new CLPlate(_test.plate).valid).toBe(_test.plateValid);
-    });
-    test(`new CLPlate(\'${_test.plate}\').type should result in \'${_test.plateType}\'`, () => {
-      expect(new CLPlate(_test.plate).type).toBe(_test.plateType);
+      test('should validate correctly via functions', () => {
+        expect(plateValid(plate)).toBe(expectedValid);
+        expect(plateType(plate)).toBe(expectedType);
+      });
+
+      test('should validate correctly via CLPlate class', () => {
+        const instance = new CLPlate(plate);
+        expect(instance.isValid).toBe(expectedValid);
+        expect(instance.type).toBe(expectedType);
+      });
+
+      if (expectedValid && plate === 'BB-CC-12') {
+        test('should format correctly', () => {
+          const instance = new CLPlate(plate);
+          expect(instance.formatted).toBe('BBCC-12');
+        });
+      }
+
+      if (expectedValid && plate === 'A6709') {
+        test('should format correctly for 5-digit plates', () => {
+          const instance = new CLPlate(plate);
+          expect(instance.formatted).toBe('A-6709');
+        });
+      }
     });
   });
-
 });

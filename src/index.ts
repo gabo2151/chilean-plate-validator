@@ -1,57 +1,79 @@
 import { REGEX_LIST, SPECIAL_PLATES } from "./constants";
 
 /**
- * Verifies if the plate is valid in Chile.
- *
- * @param plate Plate to validate.
- *
- * @returns True if the plate is valid in any of the RegEx saved,
- * false otherwise.
+ * Normalizes the plate string by removing hyphens, spaces, and converting to uppercase.
+ * @param p The raw plate string.
+ * @returns A sanitized, uppercase string.
+ */
+const normalize = (p: string): string => p.replace(/[-\s]/g, "").toUpperCase();
+
+/**
+ * Verifies if a given string is a valid Chilean license plate.
+ * @param plate The plate string to validate.
+ * @returns `true` if the plate matches any known Chilean format, `false` otherwise.
  */
 export function plateValid(plate: string): boolean {
-  return !!REGEX_LIST.find(reg => reg.regex.test(plate.toUpperCase()));
+  if (!plate) return false;
+  const clean = normalize(plate);
+  return REGEX_LIST.some((reg) => reg.regex.test(clean));
 }
 
 /**
- * Get the plate type according to the RegEx associated.
- *
- * @param plate Plate to check the type.
- *
- * @returns The type according to the RegEx that matches the plate submitted.
+ * Identifies the specific type of Chilean plate.
+ * @param plate The plate string to check.
+ * @returns The name of the plate category or 'INVALID' if no match is found.
  */
 export function plateType(plate: string): string {
-  plate = plate.toUpperCase();
-  const findPlate = REGEX_LIST.find(reg => reg.regex.test(plate));
+  if (!plate) return 'INVALID';
+  const clean = normalize(plate);
+
+  const findPlate = REGEX_LIST.find((reg) => reg.regex.test(clean));
+
   if (findPlate?.name === 'OLD_PLATE') {
-    const specialPlate = SPECIAL_PLATES.find(sp => plate.indexOf(sp.combination) > -1 );
-    if(!!specialPlate) return specialPlate.name;
+    const special = SPECIAL_PLATES.find((sp) => clean.startsWith(sp.combination));
+    if (special) return special.name;
   }
-  return (findPlate ? findPlate.name : 'INVALID');
+
+  return findPlate ? findPlate.name : 'INVALID';
 }
 
 /**
- * Plate class... Working on this...
+ * Represents a Chilean License Plate with utility methods for validation and formatting.
  */
 export class CLPlate {
-  private readonly validState: boolean;
-  private readonly plateType: string;
+  public readonly clean: string;
+  private readonly _isValid: boolean;
+  private readonly _type: string;
+
+  constructor(plate: string) {
+    this.clean = normalize(plate);
+    this._isValid = plateValid(this.clean);
+    this._type = plateType(this.clean);
+  }
+
+  get isValid(): boolean { return this._isValid; }
+  get type(): string { return this._type; }
 
   /**
-   * Creates a new Plate instance.
-   *
-   * @param plate Plate required to check validity and type
+   * Formats the plate for display (e.g., adds hyphens where applicable).
+   * @example "AA1234" -> "AA-1234"
+   * @returns The formatted plate string or the cleaned string if invalid.
    */
-  constructor(plate: string) {
-    this.validState = plateValid(plate);
-    this.plateType = plateType(plate);
-  }
+  get formatted(): string {
+    if (!this.isValid) return this.clean;
 
-  get valid(): boolean {
-    return this.validState;
-  }
+    const type = this.type;
 
-  get type(): string {
-    return this.plateType;
-  }
+    if (this.clean.length === 6) {
+      const isOldFormat = type === 'OLD_PLATE' || SPECIAL_PLATES.some(sp => sp.name === type);
+      const splitIndex = isOldFormat ? 2 : 4;
+      return `${this.clean.slice(0, splitIndex)}-${this.clean.slice(splitIndex)}`;
+    }
 
+    if (this.clean.length === 5) {
+      return `${this.clean.slice(0, 1)}-${this.clean.slice(1)}`;
+    }
+
+    return this.clean;
+  }
 }

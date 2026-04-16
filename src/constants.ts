@@ -1,17 +1,20 @@
 /**
- * RegExes build by chilean civil registration specifications.<br>
- * [«Instructivo para Validación de Patentes - Servicio de Registro Civil e Identificación»](https://www.registrocivil.cl/PortalOI/Manuales/ValidacionPatentes.pdf)
+ * RegExes built based on Chilean Civil Registration specifications.
+ * @source [«Instructivo para Validación de Patentes - Servicio de Registro Civil e Identificación»](https://www.registrocivil.cl/PortalOI/Manuales/ValidacionPatentes.pdf)
+ * @source [Local Backup](./docs/ValidacionPatentes.pdf)
  */
 export const REGEX_LIST = [
-  { name: 'OLD_PLATE', regex: /^(?=.{6}$)[A-Z]{2}\d{4}[^s]*$/ },
-  { name: 'NEW_VEHICLE_PLATE', regex: /^(?=.{6}$)[B-DF-HJ-LPR-TV-Z]{4}[1-9]\d[^s]*$/ },
-  { name: 'NEW_MOTORCYCLE_PLATE', regex: /^(?=.{6}$)[B-DF-HJ-LPR-TV-Z]{3}\d{3}[^s]*$/ },
-  { name: 'POLICE', regex: /^(?=.{5}$)[BCJMZ]\d{4}[^s]*$/ },
-  { name: 'AMBULANCE', regex: /^(?=.{5}$)A\d{4}[^s]*$/ },
+  { name: 'NEW_VEHICLE_PLATE', regex: /^(?=.{6}$)[B-DF-HJ-LPR-TV-Z]{4}[1-9]\d$/ },
+  { name: 'NEW_MOTORCYCLE_PLATE', regex: /^(?=.{6}$)[B-DF-HJ-LPR-TV-Z]{3}\d{3}$/ },
+  { name: 'TRAILER_PLATE', regex: /^(?=.{6}$)[B-DF-HJ-LPR-TV-Z]{3}\d{3}$/ },
+  { name: 'OLD_PLATE', regex: /^(?=.{6}$)[A-Z]{2}\d{4}$/ },
+  { name: 'POLICE', regex: /^(?=.{5}$)[BCJMZ]\d{4}$/ },
+  { name: 'AMBULANCE', regex: /^(?=.{5}$)A\d{4}$/ },
 ]
 
 /**
- * Source [Wikipedia: Matrículas automovilísticas de Chile](https://es.wikipedia.org/wiki/Matrículas_automovilísticas_de_Chile)
+ * Special vehicle categories for older plate formats.
+ * @source [Wikipedia: Matrículas automovilísticas de Chile](https://es.wikipedia.org/wiki/Matrículas_automovilísticas_de_Chile)
  */
 export const SPECIAL_PLATES = [
   { combination: 'AG', name: 'GRÚA' },

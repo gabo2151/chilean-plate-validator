@@ -1,8 +1,23 @@
-node_modules
-sonarlint
-.idea
-dist
-coverage
-package-lock.json
-.coveralls.yml
+# Dependencies
+node_modules/
+
+# Build and Distribution
+dist/
+lib/
+*.tsbuildinfo
+
+# Tests and Coverage
+coverage/
 test-report.xml
+.coveralls.yml
+
+# IDEs and Editors
+.idea/
+.vscode/
+sonarlint/
+*.swp
+*.orig
+
+# System Files
+.DS_Store
+Thumbs.db

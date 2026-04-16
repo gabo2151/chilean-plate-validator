@@ -1,12 +1,20 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
-  transform: {'^.+\\.ts?$': 'ts-jest'},
+  preset: 'ts-jest',
   testEnvironment: 'node',
-  testRegex: '/tests/.*\\.(test|spec)?\\.(ts|tsx)$',
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  testMatch: ['**/tests/**/*.test.ts'],
   collectCoverage: true,
   testResultsProcessor: 'jest-sonar-reporter',
   coveragePathIgnorePatterns: [
     '/node_modules/',
-    '/test/'
-  ]
-}
+    '/tests/'
+  ],
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', {
+      tsconfig: 'tsconfig.json',
+      diagnostics: {
+        ignoreCodes: [5101]
+      }
+    }],
+  },
+};

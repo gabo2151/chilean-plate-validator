@@ -1,21 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "lib": [
-      "es2015"
-    ],
+    "target": "ES2020",
+    "module": "NodeNext",
+    "isolatedModules": true,
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2020"],
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
     "sourceMap": true,
-    "importHelpers": true
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "ignoreDeprecations": "6.0",
+    "types": ["jest", "node"]
   },
-  "include": [
-    "./src"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "tests", "jest.config.js"]
 }
