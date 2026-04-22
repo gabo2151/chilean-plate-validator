@@ -4,12 +4,12 @@
  * @source [Local Backup](./docs/ValidacionPatentes.pdf)
  */
 export const REGEX_LIST = [
-  { name: 'NEW_VEHICLE_PLATE', regex: /^(?=.{6}$)[B-DF-HJ-LPR-TV-Z]{4}[1-9]\d$/ },
-  { name: 'NEW_MOTORCYCLE_PLATE', regex: /^(?=.{6}$)[B-DF-HJ-LPR-TV-Z]{3}\d{3}$/ },
-  { name: 'TRAILER_PLATE', regex: /^(?=.{6}$)[B-DF-HJ-LPR-TV-Z]{3}\d{3}$/ },
-  { name: 'OLD_PLATE', regex: /^(?=.{6}$)[A-Z]{2}\d{4}$/ },
-  { name: 'POLICE', regex: /^(?=.{5}$)[BCJMZ]\d{4}$/ },
-  { name: 'AMBULANCE', regex: /^(?=.{5}$)A\d{4}$/ },
+  { name: 'NEW_VEHICLE_PLATE', regex: /^[B-DF-HJ-LPR-TV-Z]{4}[1-9]\d$/ },
+  { name: 'NEW_MOTORCYCLE_PLATE', regex: /^[B-DF-HJ-LPR-TV-Z]{3}\d{3}$/ },
+  // { name: 'TRAILER_PLATE', regex: /^[B-DF-HJ-LPR-TV-Z]{3}\d{3}$/ },
+  { name: 'OLD_PLATE', regex: /^[A-Z]{2}\d{4}$/ },
+  { name: 'POLICE', regex: /^[BCJMZ]\d{4}$/ },
+  { name: 'AMBULANCE', regex: /^A\d{4}$/ },
 ]
 
 /**
