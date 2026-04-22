@@ -1,7 +1,7 @@
 {
   "name": "chilean-plate-validator",
-  "version": "0.11.0",
-  "description": "Simple chilean plate validator",
+  "version": "1.0.0",
+  "description": "Lightweight, zero-dependency validator for Chilean license plates (PPU)",
   "author": "Gabriel Galilea",
   "license": "MIT",
   "main": "dist/index.js",
