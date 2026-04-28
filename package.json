@@ -1,6 +1,6 @@
 {
   "name": "chilean-plate-validator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Lightweight, zero-dependency validator for Chilean license plates (PPU)",
   "author": "Gabriel Galilea",
   "license": "MIT",
@@ -25,11 +25,21 @@
     "url": "git+https://github.com/gabo2151/chilean-plate-validator.git"
   },
   "keywords": [
+    "chile",
+    "ppu",
     "patente",
-    "plate",
-    "Chile",
+    "patentes-chile",
     "validator",
-    "validar"
+    "lpr",
+    "alpr",
+    "ocr-correction",
+    "license-plate",
+    "vehicle-identification",
+    "ley-21601",
+    "logistica",
+    "transporte",
+    "typescript",
+    "zero-dependency"
   ],
   "devDependencies": {
     "@types/jest": "~30.0.0",

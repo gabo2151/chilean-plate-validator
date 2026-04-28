@@ -8,62 +8,25 @@
 
 ## 🇨🇱 Description
 
-A lightweight, zero-dependency utility to validate and identify Chilean license plates. Updated to comply with the latest 2024-2026 regulations (**Ley 21.601**).
+A lightweight, zero-dependency utility for **Chilean license plate (PPU) validation and identification**. Optimized for **LPR/OCR** systems and compliant with **Ley 21.601** (2024-2026 regulations).
 
 ### Features
+* **OCR-tolerant (Fuzzy Mode)**: Automatically corrects common character substitutions from image recognition pipelines (e.g., `8` → `B`, `0` → `O`).
+* **Complete PPU Coverage**: Supports cars, motorcycles, trailers (remolques), and special governmental plates.
 * **Dual Build**: Native support for ESM (`import`) and CommonJS (`require`).
-* **TypeScript Ready**: Full type definitions and typed return values included.
-* **Up to date**: Supports new formats for trailers, motorcycles, and special vehicles.
-* **Strict by default**: Validation functions do not normalize internally — input contract is explicit.
+* **TypeScript Ready**: Full type definitions and `PlateType` enums for robust development.
+* **Zero Dependencies**: Extremely small footprint for edge computing or browser use.
 
-## ⚠️ Breaking changes in v1.0.0
+### Supported Formats
 
-Version 1.0.0 introduces a redesigned API. If you are upgrading from `0.x`, the following changes require attention:
+| Type        | Format          | Example  | Description                |
+|-------------|-----------------|----------|----------------------------|
+| New Vehicle | `AAAA11`        | `BCDF12` | Post-2007 standard         |
+| Old Vehicle | `AA1111`        | `AA1234` | Pre-2007 standard          |
+| Special     | `AA1111`        | `CD1234` | Diplomatic, Judicial, etc. |
+| Motorcycles | `AA111`/`AAA11` | `AB123`  | Small format plates        |
+| Police      | `Z1111`         | `Z1234`  | Carabineros de Chile       |
 
-### Plate type values
-All plate type strings have changed format. Update any comparisons in your code:
-
-| v0.x                     | v1.0.0                  |
-|--------------------------|-------------------------|
-| `'NEW_VEHICLE_PLATE'`    | `'new_vehicle_plate'`   |
-| `'NEW_MOTORCYCLE_PLATE'` | `'new_motorcycle_plate'` |
-| `'OLD_PLATE'`            | `'old_plate'`           |
-| `'POLICE'`               | `'police'`              |
-| `'AMBULANCE'`            | `'ambulance'`           |
-| `'INVALID'`              | `'invalid'`             |
-
-Use the exported `PlateType` object to avoid hardcoding strings:
-```ts
-import { PlateType } from 'chilean-plate-validator';
-
-plateType('BCDF12') === PlateType.NewVehicle // true
-```
-
-### Validation is now strict
-`plateValid` and `plateType` no longer normalize the input internally. Inputs with hyphens or spaces will return `false` / `'invalid'`. Use `normalize` explicitly if needed:
-
-```ts
-// v0.x — worked
-plateValid('BC-DF12') // true
-
-// v1.0.0 — strict
-plateValid('BC-DF12')              // false
-plateValid(normalize('BC-DF12'))   // true
-```
-
-### Special plate metadata
-Special plate categories (diplomatic, police support, etc.) are no longer returned as a type string. Use the new `specialPlateInfo` function or `CLPlate.specialInfo` to access their metadata:
-
-```ts
-// v0.x
-plateType('CD1234') // 'CUERPO_DIPLOMÁTICO'
-
-// v1.0.0
-plateType('CD1234')        // 'old_plate'
-specialPlateInfo('CD1234') // { prefix: 'CD', label: 'Cuerpo diplomático', authority: 'governmental', ... }
-```
-
----
 
 ## 🚀 Installation
 
@@ -93,6 +56,36 @@ plateType('Z1234')  // 'police'
 // Get special plate metadata (old format only)
 specialPlateInfo('CD1234') // { prefix: 'CD', label: 'Cuerpo diplomático', authority: 'governmental', ... }
 specialPlateInfo('AA1234') // null
+```
+
+### Fuzzy validation (OCR input)
+
+When the plate string comes from an image recognition pipeline, use fuzzy mode to correct common character substitutions (`0→O`, `1→I`, `8→B`, `5→S`, `2→Z`) before validating:
+
+```ts
+import { plateValid, fuzzyPlateValid } from 'chilean-plate-validator'
+
+// Strict mode — fails on OCR errors
+plateValid('8CDF12') // false
+
+// Option 1 — config flag
+plateValid('8CDF12', { fuzzy: true }) // true — '8' corrected to 'B'
+
+// Option 2 — shorthand
+fuzzyPlateValid('8CDF12') // true
+```
+
+```ts
+import { plateValid, fuzzyPlateValid, fuzzyCorrect } from 'chilean-plate-validator'
+
+// Validate only
+plateValid('8CDF12', { fuzzy: true }) // true
+fuzzyPlateValid('8CDF12')             // true
+
+// Get the corrected plate(s)
+fuzzyCorrect('8CDF12') // ['BCDF12']
+fuzzyCorrect('BCDF12') // ['BCDF12'] — already valid
+fuzzyCorrect('XXXX99') // []
 ```
 
 ### Using the `PlateType` object
@@ -128,6 +121,38 @@ special.isValid     // true
 special.type        // 'old_plate'
 special.formatted   // 'CD-1234'
 special.specialInfo // { prefix: 'CD', label: 'Cuerpo diplomático', authority: 'governmental', ... }
+```
+
+For OCR input, use the fuzzy getters on the instance or the static helpers:
+
+```ts
+// Instance — three distinct states
+const plate = new CLPlate('8CDF12')
+
+plate.isValid        // false — strict validation fails
+plate.isFuzzyValid   // true  — recoverable via OCR correction
+plate.fuzzyCorrections // ['BCDF12']
+
+// Already valid plates return [] from fuzzyCorrections
+new CLPlate('BCDF12').isFuzzyValid    // false — already strictly valid
+new CLPlate('BCDF12').fuzzyCorrections // []
+
+// Unrecoverable input
+new CLPlate('XXXX99').isFuzzyValid    // false
+new CLPlate('XXXX99').fuzzyCorrections // []
+```
+
+```ts
+// Static helpers — no instantiation needed
+CLPlate.normalize('BC-DF 12')   // 'BCDF12'
+CLPlate.fuzzyCorrect('8CDF12')  // ['BCDF12']
+CLPlate.isValidFuzzy('8CDF12')  // true
+```
+
+```ts
+// toString() — coercion-friendly
+String(new CLPlate('BCDF12'))     // 'BCDF-12'
+`Plate: ${new CLPlate('AA1234')}` // 'Plate: AA-1234'
 ```
 
 ## 📚 Legal basis & documentation
