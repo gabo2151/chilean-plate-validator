@@ -6,8 +6,16 @@ const strictCases = [
   { plate: '',       expectedValid: false, expectedType: PlateType.Invalid },
   { plate: 'BBCC10', expectedValid: true,  expectedType: PlateType.NewVehicle },
   { plate: 'AR1240', expectedValid: true,  expectedType: PlateType.Old },
-  { plate: 'CBC320', expectedValid: true,  expectedType: PlateType.NewMotorcycle },
-  { plate: 'RRR123', expectedValid: true,  expectedType: PlateType.NewMotorcycle },
+  // Motorcycles are 3 letters + 2 digits (LLL·nn) — real examples.
+  { plate: 'BJH61',  expectedValid: true,  expectedType: PlateType.NewMotorcycle },
+  { plate: 'FLB49',  expectedValid: true,  expectedType: PlateType.NewMotorcycle },
+  // Motorcycle series allow M, N and Q (unlike vehicles).
+  { plate: 'MMN01',  expectedValid: true,  expectedType: PlateType.NewMotorcycle },
+  { plate: 'ZBQ31',  expectedValid: true,  expectedType: PlateType.NewMotorcycle },
+  // Old 3L+3D shape is no longer a valid motorcycle format.
+  { plate: 'CBC320', expectedValid: false, expectedType: PlateType.Invalid },
+  // The same M/N/Q letters in the vehicle format (4 letters) remain invalid — vehicles omit them.
+  { plate: 'MMNQ02', expectedValid: false, expectedType: PlateType.Invalid },
   { plate: 'CD1202', expectedValid: true,  expectedType: PlateType.Old },
   { plate: 'Z2139',  expectedValid: true,  expectedType: PlateType.Police },
   { plate: 'A6709',  expectedValid: true,  expectedType: PlateType.Ambulance },
@@ -76,6 +84,10 @@ describe('CLPlate', () => {
     expect(new CLPlate('A6709').formatted).toBe('A-6709');
   });
 
+  test('formats motorcycle plate correctly (3-2 split)', () => {
+    expect(new CLPlate('BJH61').formatted).toBe('BJH-61');
+  });
+
   test('returns raw clean string when invalid', () => {
     expect(new CLPlate('SEXY69').formatted).toBe('SEXY69');
   });
@@ -115,6 +127,26 @@ describe('CLPlate — fuzzyCorrections', () => {
 
   test('handles empty string', () => {
     expect(new CLPlate('').fuzzyCorrections).toEqual([]);
+  });
+});
+
+describe('CLPlate — isFuzzyValid', () => {
+  test('returns true for OCR-recoverable input', () => {
+    expect(new CLPlate('8CDF12').isFuzzyValid).toBe(true);
+  });
+
+  test('returns true for already-valid plates (superset of strict)', () => {
+    const plate = new CLPlate('BCDF12');
+    expect(plate.isValid).toBe(true);
+    expect(plate.isFuzzyValid).toBe(true);
+  });
+
+  test('returns false for unrecoverable input', () => {
+    expect(new CLPlate('AEIOU9').isFuzzyValid).toBe(false);
+  });
+
+  test('handles empty string', () => {
+    expect(new CLPlate('').isFuzzyValid).toBe(false);
   });
 });
 
@@ -203,6 +235,12 @@ describe('fuzzyCorrect', () => {
 
   test('corrects old format plate (digit in letter position)', () => {
     expect(fuzzyCorrect('8R1240')).toEqual(['BR1240']); // 8→B
+  });
+
+  test('recovers a motorcycle plate (LLL·nn split)', () => {
+    // OCR misreads the trailing 1 as I; the 3-letter/2-digit split recovers it.
+    expect(fuzzyCorrect('BJH6I')).toContain('BJH61');
+    expect(fuzzyPlateValid('BJH6I')).toBe(true);
   });
 });
 

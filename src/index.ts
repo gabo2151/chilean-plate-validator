@@ -46,12 +46,13 @@ function getFuzzyCandidates(plate: string): string[] {
   const candidates: string[] = [plate];
 
   if (plate.length === 6) {
-    candidates.push(correctOcrErrors(plate, [0, 1, 2, 3], [4, 5]));
-    candidates.push(correctOcrErrors(plate, [0, 1], [2, 3, 4, 5]));
+    candidates.push(correctOcrErrors(plate, [0, 1, 2, 3], [4, 5])); // new vehicle (LLLL·nn)
+    candidates.push(correctOcrErrors(plate, [0, 1], [2, 3, 4, 5])); // old format (LL·nnnn)
   }
 
   if (plate.length === 5) {
-    candidates.push(correctOcrErrors(plate, [0], [1, 2, 3, 4]));
+    candidates.push(correctOcrErrors(plate, [0], [1, 2, 3, 4]));    // police / ambulance (L·nnnn)
+    candidates.push(correctOcrErrors(plate, [0, 1, 2], [3, 4]));    // motorcycle (LLL·nn)
   }
 
   return [...new Set(candidates)];
@@ -74,7 +75,7 @@ function getFuzzyCandidates(plate: string): string[] {
  * @example
  * fuzzyCorrect('8CDF12') // ['BCDF12']
  * fuzzyCorrect('BCDF12') // ['BCDF12'] — already valid, returned as-is
- * fuzzyCorrect('XXXX99') // []
+ * fuzzyCorrect('AEIOU9') // []
  */
 export function fuzzyCorrect(plate: string): string[] {
   if (!plate) return [];
@@ -136,7 +137,7 @@ export function plateValid(plate: string, config?: IPlateValidConfig): boolean {
  * @example
  * fuzzyPlateValid('8CDF12') // true  — '8' corrected to 'B'
  * fuzzyPlateValid('BCDF12') // true  — no correction needed
- * fuzzyPlateValid('XXXX99') // false — no valid format found
+ * fuzzyPlateValid('AEIOU9') // false — no valid format found
  */
 export function fuzzyPlateValid(plate: string): boolean {
   return fuzzyCorrect(plate).length > 0;
@@ -250,7 +251,7 @@ export class CLPlate {
    * @example
    * CLPlate.fuzzyCorrect('8CDF12') // ['BCDF12']
    * CLPlate.fuzzyCorrect('BCDF12') // ['BCDF12'] — already valid, returned as-is
-   * CLPlate.fuzzyCorrect('XXXX99') // []
+   * CLPlate.fuzzyCorrect('AEIOU9') // []
    */
   static fuzzyCorrect(plate: string): string[] {
     return fuzzyCorrect(plate);
@@ -269,7 +270,7 @@ export class CLPlate {
    * @example
    * CLPlate.isValidFuzzy('8CDF12') // true  — '8' corrected to 'B'
    * CLPlate.isValidFuzzy('BCDF12') // true  — no correction needed
-   * CLPlate.isValidFuzzy('XXXX99') // false — no valid format found
+   * CLPlate.isValidFuzzy('AEIOU9') // false — no valid format found
    */
   static isValidFuzzy(plate: string): boolean {
     return fuzzyPlateValid(plate);
@@ -284,10 +285,27 @@ export class CLPlate {
    * @example
    * new CLPlate('8CDF12').fuzzyCorrections // ['BCDF12']
    * new CLPlate('BCDF12').fuzzyCorrections // ['BCDF12'] — already valid, returned as-is
-   * new CLPlate('XXXX99').fuzzyCorrections // []
+   * new CLPlate('AEIOU9').fuzzyCorrections // []
    */
   get fuzzyCorrections(): string[] {
     return fuzzyCorrect(this.clean);
+  }
+
+  /**
+   * Whether a valid Chilean plate can be derived from {@link clean} via OCR
+   * correction. Fuzzy validity is a superset of strict validity, so this also
+   * returns `true` for already-valid plates — mirrors {@link fuzzyPlateValid}.
+   *
+   * Use {@link isValid} if you need to distinguish a strictly-valid plate from
+   * one that only becomes valid after correction.
+   *
+   * @example
+   * new CLPlate('8CDF12').isFuzzyValid // true  — recoverable via OCR correction
+   * new CLPlate('BCDF12').isFuzzyValid // true  — already strictly valid
+   * new CLPlate('AEIOU9').isFuzzyValid // false — unrecoverable
+   */
+  get isFuzzyValid(): boolean {
+    return fuzzyPlateValid(this.clean);
   }
 
   /** Whether the plate matches a known Chilean format. */
@@ -314,6 +332,7 @@ export class CLPlate {
    * @example
    * new CLPlate('AA1234').formatted  // 'AA-1234'
    * new CLPlate('BCDF12').formatted  // 'BCDF-12'
+   * new CLPlate('BJH61').formatted   // 'BJH-61'  — motorcycle
    * new CLPlate('A1234').formatted   // 'A-1234'
    */
   get formatted(): string {
@@ -326,7 +345,9 @@ export class CLPlate {
     }
 
     if (this.clean.length === 5) {
-      return `${this.clean.slice(0, 1)}-${this.clean.slice(1)}`;
+      // Motorcycles split 3-2 (BJH-61); police/ambulance split 1-4 (Z-2139).
+      const splitIndex = this._type === PlateType.NewMotorcycle ? 3 : 1;
+      return `${this.clean.slice(0, splitIndex)}-${this.clean.slice(splitIndex)}`;
     }
 
     /* istanbul ignore next */

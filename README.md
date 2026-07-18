@@ -19,13 +19,20 @@ A lightweight, zero-dependency utility for **Chilean license plate (PPU) validat
 
 ### Supported Formats
 
-| Type        | Format          | Example  | Description                |
-|-------------|-----------------|----------|----------------------------|
-| New Vehicle | `AAAA11`        | `BCDF12` | Post-2007 standard         |
-| Old Vehicle | `AA1111`        | `AA1234` | Pre-2007 standard          |
-| Special     | `AA1111`        | `CD1234` | Diplomatic, Judicial, etc. |
-| Motorcycles | `AA111`/`AAA11` | `AB123`  | Small format plates        |
-| Police      | `Z1111`         | `Z1234`  | Carabineros de Chile       |
+Format notation: `L` = letter, `1` = digit.
+
+| Type           | Format   | Example  | Description                             |
+|----------------|----------|----------|-----------------------------------------|
+| New Vehicle    | `LLLL11` | `BCDF12` | Vehicles, 4+ wheels (`LLLL·nn`)         |
+| New Motorcycle | `LLL11`  | `BJH61`  | Motorcycles/trailers, since 2014 (`LLL·nn`) |
+| Old Vehicle    | `LL1111` | `AR1240` | Pre-2007 standard (`LL·nnnn`)           |
+| Special        | `LL1111` | `CD1202` | Diplomatic, consular, police, etc.      |
+| Police         | `L1111`  | `Z1234`  | Carabineros de Chile                    |
+| Ambulance      | `A1111`  | `A6709`  | Ambulance plates                        |
+
+> **Letter sets differ by format.** Vehicle series omit vowels **and** `M`, `N`, `Q`; motorcycle series omit only vowels, so plates like `MMN01` or `ZBQ31` are valid motorcycles.
+>
+> **Heads up — 2025 format change.** A 2025 decree (D.O. 16-01-2025) moves vehicles to 5 letters + 1 digit and motorcycles to 4 letters + 1 digit, rolling out gradually (~2027 for motos, ~2029 for cars), plus a green plate for EVs/hybrids. These new formats are **not yet validated** by this library and will be added as they enter circulation.
 
 
 ## 🚀 Installation
@@ -85,7 +92,7 @@ fuzzyPlateValid('8CDF12')             // true
 // Get the corrected plate(s)
 fuzzyCorrect('8CDF12') // ['BCDF12']
 fuzzyCorrect('BCDF12') // ['BCDF12'] — already valid
-fuzzyCorrect('XXXX99') // []
+fuzzyCorrect('AEIOU9') // []
 ```
 
 ### Using the `PlateType` object
@@ -126,20 +133,20 @@ special.specialInfo // { prefix: 'CD', label: 'Cuerpo diplomático', authority: 
 For OCR input, use the fuzzy getters on the instance or the static helpers:
 
 ```ts
-// Instance — three distinct states
+// Instance — fuzzy validity is a superset of strict validity
 const plate = new CLPlate('8CDF12')
 
-plate.isValid        // false — strict validation fails
-plate.isFuzzyValid   // true  — recoverable via OCR correction
+plate.isValid          // false — strict validation fails
+plate.isFuzzyValid     // true  — recoverable via OCR correction
 plate.fuzzyCorrections // ['BCDF12']
 
-// Already valid plates return [] from fuzzyCorrections
-new CLPlate('BCDF12').isFuzzyValid    // false — already strictly valid
-new CLPlate('BCDF12').fuzzyCorrections // []
+// Already-valid plates are also fuzzy-valid and correct to themselves
+new CLPlate('BCDF12').isFuzzyValid     // true
+new CLPlate('BCDF12').fuzzyCorrections // ['BCDF12']
 
 // Unrecoverable input
-new CLPlate('XXXX99').isFuzzyValid    // false
-new CLPlate('XXXX99').fuzzyCorrections // []
+new CLPlate('AEIOU9').isFuzzyValid     // false
+new CLPlate('AEIOU9').fuzzyCorrections // []
 ```
 
 ```ts

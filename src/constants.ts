@@ -52,11 +52,28 @@ export interface PlatePattern {
 export const PLATE_PATTERNS: PlatePattern[] = [
   {
     type:    PlateType.NewVehicle,
+    // Vehicle format is 4 letters + 2 digits (LLLL·nn). Series omit the vowels
+    // A, E, I, O, U and also M, N, Q. Ref: Registro Civil "Nuevo formato PPU".
+    // TODO: the 2025 decree (D.O. 16-01-2025) moves cars to 5 letters + 1 digit
+    //       (LLLLL·n), rolling out ~2029. Add that pattern when it circulates.
     pattern: /^[B-DF-HJ-LPR-TV-Z]{4}[1-9]\d$/,
   },
   {
     type:    PlateType.NewMotorcycle,
-    pattern: /^[B-DF-HJ-LPR-TV-Z]{3}\d{3}$/,
+    // 3 letters + 2 digits (LLL·nn), e.g. BJH·61, FLB·49.
+    //
+    // IMPORTANT — do NOT change to \d{3}. The official registry format is
+    // LLL·nnn-V, where the last digit is a check digit. That check digit is NOT
+    // printed on the physical plate, so an OCR/LPR camera only ever sees LLL·nn.
+    // This library validates what the camera reads, not the registry record.
+    //
+    // Letter set: all consonants — including M, N and Q, which the vehicle format
+    // excludes — per the Registro Civil check-digit table. Only vowels are omitted.
+    // CAVEAT: some sources note recent moto series may also reach into vowels
+    // (I, O); if a valid plate is wrongly rejected, widen this class.
+    // TODO: the 2025 decree (D.O. 16-01-2025) moves motos to 4 letters + 1 digit
+    //       (LLLL·n), rolling out ~2027. Add that pattern when it circulates.
+    pattern: /^[B-DF-HJ-NP-TV-Z]{3}\d{2}$/,
     // NOTE: Trailer plates share this exact format and cannot be visually distinguished.
     // Distinguishing between them requires external context (e.g. registration data).
   },

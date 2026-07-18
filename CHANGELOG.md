@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.2.0
+
+### Fixed
+- **Motorcycle format corrected**: motorcycle plates are 3 letters + **2** digits (`LLL·nn`, e.g. `BJH61`), not 3 + 3. The registry format `LLL·nnn` includes a check digit that is not printed on the physical plate, so an OCR/LPR camera only ever reads `LLL·nn` — which is what this library validates. The previous pattern accepted 6-character strings like `CBC320` that never appear on a plate, and rejected real ones. Formatting (`BJH-61`) and fuzzy recovery now handle the 3-2 split.
+- Motorcycle letter set now includes `M`, `N` and `Q` (per the Registro Civil check-digit table); vehicle plates still correctly omit them.
+- Documentation: corrected several examples that used `XXXX99` as "invalid" (it is a valid vehicle plate) and fixed the supported-formats table.
+
+### Added
+- `CLPlate.isFuzzyValid` instance getter — returns `true` when a valid plate can be derived from the input via OCR correction (superset of `isValid`).
+
+### Notes
+- A 2025 decree (D.O. 16-01-2025) introduces new formats (vehicles: 5 letters + 1 digit; motorcycles: 4 letters + 1 digit) plus a green plate for EVs/hybrids, rolling out gradually (~2027–2029). These are **not yet validated** and will be added as they enter circulation.
+
+## v1.1.1
+
+### Fixed
+- **Packaging**: `main`, `types` and `exports` pointed to non-existent files (`index.js`, `index.d.ts`), breaking `require()` and TypeScript type resolution for consumers. Now correctly reference the emitted `.cjs`/`.mjs`/`.d.cts`/`.d.mts` files.
+
 ## v1.1.0
 
 ### Added
